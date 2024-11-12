@@ -1,8 +1,109 @@
-/*
-https://docs.nestjs.com/providers#services
-*/
-
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Package } from './utils/package.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
-export class AppService {}
+export class AppService {
+  constructor(
+    @InjectModel(Package.name) private _packageModel: Model<Package>,
+  ) {}
+
+  // Login Admin
+  loginAdmin(email: string, password: string) {
+    if (email != 'admin@zestylogistics' && password != 'admin234zesty')
+      throw new UnauthorizedException('Login Details Incorrect');
+    else {
+      return { message: 'success' };
+    }
+  }
+
+  // Get all packages
+  async getAllPackages() {
+    const allPackages = this._packageModel.find();
+    return {
+      message: 'success',
+      allPackages,
+    };
+  }
+
+  // Search Package
+  async searchForPackage(trackingId: string) {
+    const trackingPackage = await this._packageModel.findOne({
+      trackingId: trackingId,
+    });
+    if (!trackingPackage) {
+      throw new NotFoundException('Package does not exist');
+    }
+    return { message: 'success', trackingPackage };
+  }
+
+  // Add Package
+  async addPackage(packageItem) {
+    try {
+      await this._packageModel.create({
+        trackingId: packageItem.trackingId,
+        senderName: packageItem.senderName,
+        senderAddress: packageItem.senderAddress,
+        senderEmailAddress: packageItem.senderEmailAddress,
+        senderTelephone: packageItem.senderTelephone,
+        receiverName: packageItem.receiverName,
+        receiverAddress: packageItem.receiverAddress,
+        receiverEmailAddress: packageItem.receiverEmailAddress,
+        receiverTelephone: packageItem.receiverTelephone,
+        originCountry: packageItem.originCountry,
+        destinationCountry: packageItem.destinationCountry,
+        shipingDate: packageItem.shipingDate,
+        expectedDeliveryDate: packageItem.expectedDeliveryDate,
+        typeOfShipment: packageItem.typeOfShipment,
+        carrier: packageItem.carrier,
+        comments: packageItem.comments,
+        shipingContent: packageItem.shipingContent,
+        shipingTracking: packageItem.shipingTracking,
+      });
+      return {
+        message: 'success',
+      };
+    } catch (error) {
+      throw new ConflictException('Could not add new package to DB');
+      console.log(error);
+    }
+  }
+
+  // Delete Package
+  async deletePackage(trackingId) {
+    await this._packageModel.findOneAndDelete({ trackingId: trackingId });
+    return { message: 'success' };
+  }
+
+  // Edit Package
+  async editPackage(packageItem) {
+    const trackingPackage = await this._packageModel.findOne({
+      trackingId: packageItem.trackingId,
+    });
+    const updatedPackage = trackingPackage;
+    let hasUpdates = false;
+
+    for (const key in packageItem) {
+      if (updatedPackage[key] !== packageItem[key]) {
+        updatedPackage[key] = packageItem[key];
+        hasUpdates = true;
+      }
+    }
+
+    if (hasUpdates) {
+      await this._packageModel.findOneAndUpdate(
+        { trackingId: trackingPackage.trackingId },
+        updatedPackage,
+      );
+      return { message: 'Document updated with new values.' };
+    } else {
+      return { message: 'No changes detected. Document remains the same.' };
+    }
+  }
+}
