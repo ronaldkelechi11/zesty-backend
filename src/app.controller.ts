@@ -8,7 +8,6 @@ export class AppController {
   constructor(private readonly _appService: AppService) {}
 
   // Login Admin
-  @ApiTags('Login Admin')
   @ApiOperation({ summary: 'Login Admin' })
   @Post('login')
   loginAdmin(@Body('email') email: string, @Body('password') password: string) {
@@ -23,7 +22,6 @@ export class AppController {
   }
 
   // Add Package
-  @ApiTags('Login Admin')
   @Post('admin')
   @ApiOperation({ summary: 'Add a Package to the DB' })
   addPackage(@Body() packageDto: PackageDto) {
@@ -31,7 +29,6 @@ export class AppController {
   }
 
   // Get all Packages
-  @ApiTags('Login Admin')
   @Get('admin')
   @ApiOperation({ summary: 'Get all packages' })
   getAllPackages() {
@@ -39,7 +36,6 @@ export class AppController {
   }
 
   // Edit Package
-  @ApiTags('Login Admin')
   @Put('admin')
   @ApiOperation({ summary: 'Edit a Package in the DB' })
   editPackage(@Body() packageDto: PackageDto) {
@@ -47,7 +43,6 @@ export class AppController {
   }
 
   // Delete a package
-  @ApiTags('Login Admin')
   @Delete('admin')
   @ApiOperation({ summary: 'Delete a Package in the DB' })
   deleteAPackage(@Body('trackingId') trackingId: string) {
