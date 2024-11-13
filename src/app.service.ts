@@ -83,27 +83,14 @@ export class AppService {
 
   // Edit Package
   async editPackage(packageItem) {
-    const trackingPackage = await this._packageModel.findOne({
-      trackingId: packageItem.trackingId,
-    });
-    const updatedPackage = trackingPackage;
-    let hasUpdates = false;
+    const updatePackage = await this._packageModel.findOneAndUpdate(
+      {
+        trackingId: packageItem.trackingId,
+      },
+      packageItem,
+      { new: true },
+    );
 
-    for (const key in packageItem) {
-      if (updatedPackage[key] !== packageItem[key]) {
-        updatedPackage[key] = packageItem[key];
-        hasUpdates = true;
-      }
-    }
-
-    if (hasUpdates) {
-      await this._packageModel.findOneAndUpdate(
-        { trackingId: trackingPackage.trackingId },
-        updatedPackage,
-      );
-      return { message: 'Document updated with new values.' };
-    } else {
-      return { message: 'No changes detected. Document remains the same.' };
-    }
+    return { message: 'success', updatePackage };
   }
 }
