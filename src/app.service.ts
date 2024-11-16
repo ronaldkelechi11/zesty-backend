@@ -25,7 +25,7 @@ export class AppService {
 
   // Get all packages
   async getAllPackages() {
-    const allPackages = this._packageModel.find();
+    const allPackages = await this._packageModel.find();
     return {
       message: 'success',
       allPackages,
