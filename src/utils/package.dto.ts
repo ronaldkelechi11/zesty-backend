@@ -27,6 +27,7 @@ export class PackageDto {
   typeOfShipment: string;
   carrier: string;
   comments: string;
+  status:boolean;
   shipingContent: ShipingContent[];
   shipingTracking: ShipingTracking[];
 }

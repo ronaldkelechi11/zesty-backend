@@ -63,6 +63,9 @@ export class Package extends Document {
   @Prop()
   comments: string;
 
+  @Prop({default: 'true'})
+  status: boolean;
+
   @Prop()
   shipingContent: ShipingContent[];
 

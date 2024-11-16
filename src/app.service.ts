@@ -63,6 +63,7 @@ export class AppService {
         typeOfShipment: packageItem.typeOfShipment,
         carrier: packageItem.carrier,
         comments: packageItem.comments,
+        status:packageItem.status,
         shipingContent: packageItem.shipingContent,
         shipingTracking: packageItem.shipingTracking,
       });
