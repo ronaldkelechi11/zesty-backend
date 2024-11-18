@@ -18,7 +18,7 @@ export class Package extends Document {
   @Prop({ required: true, immutable: true })
   trackingId: string;
 
-  @Prop({ required: true })
+  @Prop()
   senderName: string;
 
   @Prop()
@@ -30,25 +30,25 @@ export class Package extends Document {
   @Prop()
   senderTelephone: string;
 
-  @Prop({ required: true })
+  @Prop()
   receiverName: string;
 
-  @Prop({ required: true })
+  @Prop()
   receiverAddress: string;
 
   @Prop()
   receiverEmailAddress: string;
 
-  @Prop({ required: true })
+  @Prop()
   receiverTelephone: string;
 
-  @Prop({ required: true })
+  @Prop()
   originCountry: string;
 
-  @Prop({ required: true })
+  @Prop()
   destinationCountry: string;
 
-  @Prop({ required: true })
+  @Prop()
   shipingDate: string;
 
   @Prop()
