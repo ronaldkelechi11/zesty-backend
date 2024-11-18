@@ -57,7 +57,7 @@ export class Package extends Document {
   @Prop()
   typeOfShipment: string;
 
-  @Prop({ default: 'Airplane Carrier' })
+  @Prop({ default: 'ZESTY' })
   carrier: string;
 
   @Prop()
