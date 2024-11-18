@@ -51,8 +51,7 @@ export class AppService {
         message: 'success',
       };
     } catch (error) {
-      console.log(error);
-      throw new ConflictException('Could not add new package to DB');
+      throw new ConflictException(error);
     }
   }
 
