@@ -46,6 +46,8 @@ export class AppController {
   @Delete('admin')
   @ApiOperation({ summary: 'Delete a Package in the DB' })
   deleteAPackage(@Body('trackingId') trackingId: string) {
+    console.log(trackingId);
+    
     return this._appService.deletePackage(trackingId);
   }
 }
