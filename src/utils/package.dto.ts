@@ -6,7 +6,7 @@ type ShipingContent = {
 
 type ShipingTracking = {
   datetime: string;
-  activity: string;
+  remark: string;
   location: string;
 };
 

@@ -46,27 +46,7 @@ export class AppService {
   // Add Package
   async addPackage(packageItem) {
     try {
-      await this._packageModel.create({
-        trackingId: packageItem.trackingId,
-        senderName: packageItem.senderName,
-        senderAddress: packageItem.senderAddress,
-        senderEmailAddress: packageItem.senderEmailAddress,
-        senderTelephone: packageItem.senderTelephone,
-        receiverName: packageItem.receiverName,
-        receiverAddress: packageItem.receiverAddress,
-        receiverEmailAddress: packageItem.receiverEmailAddress,
-        receiverTelephone: packageItem.receiverTelephone,
-        originCountry: packageItem.originCountry,
-        destinationCountry: packageItem.destinationCountry,
-        shipingDate: packageItem.shipingDate,
-        expectedDeliveryDate: packageItem.expectedDeliveryDate,
-        typeOfShipment: packageItem.typeOfShipment,
-        carrier: packageItem.carrier,
-        comments: packageItem.comments,
-        status:packageItem.status,
-        shipingContent: packageItem.shipingContent,
-        shipingTracking: packageItem.shipingTracking,
-      });
+      await this._packageModel.create(packageItem);
       return {
         message: 'success',
       };
