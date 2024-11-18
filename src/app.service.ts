@@ -84,6 +84,8 @@ export class AppService {
 
   // Edit Package
   async editPackage(packageItem) {
+    console.log(packageItem.trackingId);
+    
     const updatePackage = await this._packageModel.findOneAndUpdate(
       {
         trackingId: packageItem.trackingId,
