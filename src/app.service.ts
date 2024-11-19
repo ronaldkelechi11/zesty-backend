@@ -68,6 +68,8 @@ export class AppService {
   const originalPackage = await this._packageModel.findOne({
     trackingId: packageItem.trackingId,
   });
+  console.log(originalPackage);
+  
 
   if (!originalPackage) {
     throw new BadRequestException('Package not found');
