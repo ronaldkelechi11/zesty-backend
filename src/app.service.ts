@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -63,14 +64,31 @@ export class AppService {
 
   // Edit Package
   async editPackage(packageItem) {
-    const updatePackage = await this._packageModel.findOneAndUpdate(
-      {
-        trackingId: packageItem.trackingId,
-      },
-      packageItem,
-      { new: true },
-    );
+  // Find the original package by trackingId
+  const originalPackage = await this._packageModel.findOne({
+    trackingId: packageItem.trackingId,
+  });
 
-    return { message: 'success', updatePackage };
+  if (!originalPackage) {
+    throw new BadRequestException('Package not found');
   }
+
+  // Compare the original and the updated values
+  const hasChanges = Object.keys(packageItem).some((key) => {
+    return packageItem[key] !== originalPackage[key];
+  });
+
+  if (!hasChanges) {
+    return { message: 'No changes detected', updatePackage: originalPackage };
+  }
+
+  // Update the package and return the updated document
+  const updatedPackage = await this._packageModel.findOneAndUpdate(
+    { trackingId: packageItem.trackingId },
+    { $set: packageItem }, // Only set fields that are provided
+    { new: true },
+  );
+
+  return { message: 'success', updatedPackage };
+}
 }
