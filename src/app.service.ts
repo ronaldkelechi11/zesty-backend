@@ -47,12 +47,31 @@ export class AppService {
   // Add Package
   async addPackage(packageItem) {
     try {
+      // Validate email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(packageItem.senderEmailAddress) || !emailRegex.test(packageItem.receiverEmailAddress)) {
+        throw new BadRequestException('Invalid email format for sender or receiver.');
+      }
+  
+      // Validate dates
+      const shippingDate = new Date(packageItem.shipingDate);
+      const expectedDeliveryDate = new Date(packageItem.expectedDeliveryDate);
+  
+      if (shippingDate > expectedDeliveryDate) {
+        throw new BadRequestException('Shipping date cannot be after the expected delivery date.');
+      }
+  
+      // Save to database
       await this._packageModel.create(packageItem);
+  
       return {
         message: 'success',
       };
     } catch (error) {
-      throw new ConflictException(error);
+      if (error instanceof BadRequestException) {
+        throw error; // Let the BadRequestException propagate
+      }
+      throw new ConflictException(error.message || 'Failed to add package');
     }
   }
 
