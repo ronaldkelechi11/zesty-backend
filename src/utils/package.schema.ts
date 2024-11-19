@@ -67,6 +67,9 @@ export class Package extends Document {
   status: boolean;
 
   @Prop()
+  currentLocation: string;
+
+  @Prop()
   shipingContent: ShipingContent[];
 
   @Prop()
