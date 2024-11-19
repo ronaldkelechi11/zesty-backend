@@ -64,10 +64,13 @@ export class AppService {
 
   // Edit Package
   async editPackage(packageItem) {
+  console.log(packageItem);
+    
   // Find the original package by trackingId
   const originalPackage = await this._packageModel.findOne({
     trackingId: packageItem.trackingId,
   });
+
   console.log(originalPackage);
   
 
